@@ -26,7 +26,6 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
-	
 
 	/**
 	 * フォームを初期化します.
@@ -37,11 +36,6 @@ public class MemberController {
 	public MemberForm setUpForm() {
 		return new MemberForm();
 	}
-//
-//	@ModelAttribute
-//	public LoginForm setUpLoginForm() {
-//		return new LoginForm();
-//	}
 
 	/**
 	 * メンバー情報登録画面を表示します.
@@ -49,13 +43,9 @@ public class MemberController {
 	 * @return メンバー情報登録画面
 	 */
 	@RequestMapping(value = "form")
-	public String form() {
+	public String form(Model model) {
 		return "/member/form";
 	}
-
-//	public String redirectForm() {
-//		return "loginForm";
-//	}
 
 	/**
 	 * メンバー情報を登録します.
@@ -68,13 +58,21 @@ public class MemberController {
 	@RequestMapping(value = "create")
 	public String create(@Validated MemberForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return form();
+			return form(model);
 		}
-		LoginController loginController = new LoginController();
-		Member member = new Member();
-		BeanUtils.copyProperties(form, member);
-		memberService.save(member);
-		return loginController.redirectForm();
+		Member inquiryMember = new Member();
+		inquiryMember = memberService.findByMailAddress(form.getMailAddress());
+		if (inquiryMember.getMailAddress().equals(null)) {
+			Member registeredMember = new Member();
+			BeanUtils.copyProperties(form, registeredMember);
+			memberService.save(registeredMember);
+		} else {
+			String validateMessege = "メールアドレスが重複しています。";
+			model.addAttribute("validateMessege",validateMessege);
+			return form(model);
+		}
+
+		return "redirect:/";
 	}
 
 }

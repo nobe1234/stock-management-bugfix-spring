@@ -21,6 +21,9 @@
 			      	メールアドレス
 			    </th>
 			    <td>
+			    <c:if test="${validateMessege != null}">
+			    <c:out  value="${validateMessege}" ></c:out><br>
+			    </c:if>
 			        <form:errors path="mailAddress" cssStyle="color:red" element="div" ></form:errors>
 			    	<form:input path="mailAddress" placeholder="Email"/>
 			    </td>

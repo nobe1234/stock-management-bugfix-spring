@@ -45,9 +45,6 @@ public class LoginController {
 		return "loginForm";
 	}
 
-	public String redirectForm() {
-		return "redirect:/";
-	}
 
 	/**
 	 * ログイン処理を行います.
