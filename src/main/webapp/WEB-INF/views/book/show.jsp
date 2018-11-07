@@ -15,7 +15,7 @@
 			      書籍名
 			    </th>
 			    <td>
-			      ${book.name}
+			    <c:out value="">${book.name}</c:out>
 			    </td>
 			  </tr>
 			  <tr>
@@ -23,7 +23,7 @@
 			      著者
 			    </th>
 			    <td>
-			      ${book.author}
+			    <c:out value="">${book.author}</c:out>
 			    </td>
 			  </tr>
 			  <tr>
@@ -31,7 +31,7 @@
 			      出版社
 			    </th>
 			    <td>
-			      ${book.publisher}
+			    <c:out value="">${book.publisher}</c:out>
 			    </td>
 			  </tr>
 			  <tr>
