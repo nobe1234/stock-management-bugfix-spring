@@ -15,6 +15,7 @@ import jp.co.rakus.stockmanagement.service.MemberService;
 
 /**
  * メンバー関連処理を行うコントローラー.
+ * 
  * @author igamasayuki
  *
  */
@@ -28,6 +29,7 @@ public class MemberController {
 
 	/**
 	 * フォームを初期化します.
+	 * 
 	 * @return フォーム
 	 */
 	@ModelAttribute
@@ -39,39 +41,39 @@ public class MemberController {
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
 	}
-	
+
 	/**
 	 * メンバー情報登録画面を表示します.
+	 * 
 	 * @return メンバー情報登録画面
 	 */
 	@RequestMapping(value = "form")
 	public String form() {
 		return "/member/form";
 	}
-	
+
 	@RequestMapping("/redirect")
 	public String redirectForm() {
 		return "loginForm";
 	}
-	
+
 	/**
 	 * メンバー情報を登録します.
-	 * @param form フォーム
+	 * 
+	 * @param form   フォーム
 	 * @param result リザルト
-	 * @param model モデル
+	 * @param model  モデル
 	 * @return ログイン画面
 	 */
 	@RequestMapping(value = "create")
-	public String create(@Validated MemberForm form,BindingResult result, 
-			Model model) {
-		if(result.hasErrors()) {
+	public String create(@Validated MemberForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
 			return form();
 		}
 		Member member = new Member();
 		BeanUtils.copyProperties(form, member);
 		memberService.save(member);
-		return "loginForm";
-		//return "redirect:/member/redirect";
+		return "redirect:/member/redirect";
 	}
-	
+
 }
