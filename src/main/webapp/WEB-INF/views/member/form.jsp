@@ -21,10 +21,10 @@
 			      	メールアドレス
 			    </th>
 			    <td>
-			    <c:if test="${validateMessege != null}">
-			    <c:out  value="${validateMessege}" ></c:out><br>
+<%-- 			    <c:if test="${validateMailAddressMessege != null}">
+			    <c:out  value="${validateMailAddressMessege}" ></c:out><br>
 			    </c:if>
-			        <form:errors path="mailAddress" cssStyle="color:red" element="div" ></form:errors>
+ --%>			        <form:errors path="mailAddress" cssStyle="color:red" element="div" ></form:errors>
 			    	<form:input path="mailAddress" placeholder="Email"/>
 			    </td>
 			  </tr>
@@ -33,8 +33,21 @@
 			     	 パスワード
 			    </th>
 			    <td>
+			   <%--  <c:if test="${validatePasswordMessege != null}">
+			    <c:out  value="${validatePasswordMessege}" ></c:out><br>
+			    </c:if> --%>
 			        <form:errors path="password" cssStyle="color:red" element="div" ></form:errors>
 			    	<form:password path="password" placeholder="Password"/>
+			    </td>
+			  </tr>
+			  <tr>
+			    <th>
+			     	 確認用パスワード
+			    </th>
+			    <td>
+			    <!-- 確認 -->
+			        <form:errors path="retypePassword" cssStyle="color:red" element="div" ></form:errors>
+			    	<form:password path="retypePassword" placeholder="retypePassword"/>
 			    </td>
 			  </tr>
 			  <tr>

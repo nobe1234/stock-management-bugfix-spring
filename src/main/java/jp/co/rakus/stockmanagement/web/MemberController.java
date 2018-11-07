@@ -43,7 +43,7 @@ public class MemberController {
 	 * @return メンバー情報登録画面
 	 */
 	@RequestMapping(value = "form")
-	public String form(Model model) {
+	public String form() {
 		return "/member/form";
 	}
 
@@ -58,18 +58,29 @@ public class MemberController {
 	@RequestMapping(value = "create")
 	public String create(@Validated MemberForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return form(model);
+			return form();
 		}
 		Member inquiryMember = new Member();
 		inquiryMember = memberService.findByMailAddress(form.getMailAddress());
+
+		// TODO:result.rejectValue("password", "validation.date-already-registered")に直す。
+		if(!(inquiryMember.getPassword().equals(form.getRetypePassword()))) {
+			result.rejectValue("password", null,"入力されたパスワードが異なります。");
+//			String validatePasswordMessege = "メールアドレスが重複しています。";
+//			model.addAttribute("validatePasswordMessege",validatePasswordMessege);
+			return form();
+		}
+		
+		
 		if (inquiryMember.getMailAddress().equals(null)) {
 			Member registeredMember = new Member();
 			BeanUtils.copyProperties(form, registeredMember);
 			memberService.save(registeredMember);
-		} else {
-			String validateMessege = "メールアドレスが重複しています。";
-			model.addAttribute("validateMessege",validateMessege);
-			return form(model);
+		} else{
+			result.rejectValue("mailAddress", null,"メールアドレスが重複しています。");
+//			String validateMailAddressMessege = "メールアドレスが重複しています。";
+//			model.addAttribute("validateMailAddressMessege",validateMailAddressMessege);
+			return form();
 		}
 
 		return "redirect:/";

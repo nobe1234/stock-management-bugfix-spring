@@ -26,6 +26,10 @@ public class MemberForm {
 	@NotBlank(message = "パスワードは必須です。")
 	@Size(min = 4, max = 10, message = "パスワードは４文字以上、１０文字以下で設定してください。")
 	private String password;
+	/** 確認用パスワード */
+	@Size(min = 4, max = 10, message = "パスワードは４文字以上、１０文字以下で設定してください。")
+	@NotBlank(message = "パスワードは必須です。")
+	private String retypePassword;
 
 	public String getName() {
 		return name;
@@ -49,5 +53,13 @@ public class MemberForm {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getRetypePassword() {
+		return retypePassword;
+	}
+
+	public void setRetypePassword(String retypePassword) {
+		this.retypePassword = retypePassword;
 	}
 }
