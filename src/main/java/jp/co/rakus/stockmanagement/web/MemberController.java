@@ -26,6 +26,7 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
 
 	/**
 	 * フォームを初期化します.
@@ -36,11 +37,11 @@ public class MemberController {
 	public MemberForm setUpForm() {
 		return new MemberForm();
 	}
-
-	@ModelAttribute
-	public LoginForm setUpLoginForm() {
-		return new LoginForm();
-	}
+//
+//	@ModelAttribute
+//	public LoginForm setUpLoginForm() {
+//		return new LoginForm();
+//	}
 
 	/**
 	 * メンバー情報登録画面を表示します.
@@ -52,10 +53,9 @@ public class MemberController {
 		return "/member/form";
 	}
 
-	@RequestMapping("/redirect")
-	public String redirectForm() {
-		return "loginForm";
-	}
+//	public String redirectForm() {
+//		return "loginForm";
+//	}
 
 	/**
 	 * メンバー情報を登録します.
@@ -70,10 +70,11 @@ public class MemberController {
 		if (result.hasErrors()) {
 			return form();
 		}
+		LoginController loginController = new LoginController();
 		Member member = new Member();
 		BeanUtils.copyProperties(form, member);
 		memberService.save(member);
-		return "redirect:/member/redirect";
+		return loginController.redirectForm();
 	}
 
 }

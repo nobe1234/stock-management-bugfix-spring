@@ -14,6 +14,7 @@ import jp.co.rakus.stockmanagement.service.MemberService;
 
 /**
  * ログイン関連処理を行うコントローラー.
+ * 
  * @author igamasayuki
  *
  */
@@ -26,6 +27,7 @@ public class LoginController {
 
 	/**
 	 * フォームを初期化します.
+	 * 
 	 * @return フォーム
 	 */
 	@ModelAttribute
@@ -35,24 +37,29 @@ public class LoginController {
 
 	/**
 	 * ログイン画面を表示します.
+	 * 
 	 * @return ログイン画面
 	 */
 	@RequestMapping
 	public String index() {
 		return "loginForm";
 	}
-	
+
+	public String redirectForm() {
+		return "redirect:/";
+	}
+
 	/**
 	 * ログイン処理を行います.
-	 * @param form　フォーム
-	 * @param result　リザルト
-	 * @param model　モデル
-	 * @return　ログイン成功時：書籍リスト画面
+	 * 
+	 * @param form フォーム
+	 * @param result リザルト
+	 * @param model モデル
+	 * @return ログイン成功時：書籍リスト画面
 	 */
 	@RequestMapping(value = "/login")
-	public String login(@Validated LoginForm form,
-			BindingResult result, Model model) {
-		if (result.hasErrors()){
+	public String login(@Validated LoginForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
 			return index();
 		}
 		String mailAddress = form.getMailAddress();
@@ -60,7 +67,7 @@ public class LoginController {
 		Member member = memberService.findOneByMailAddressAndPassword(mailAddress, password);
 		if (member == null) {
 			ObjectError error = new ObjectError("loginerror", "メールアドレスまたはパスワードが違います。");
-            result.addError(error);
+			result.addError(error);
 			return index();
 		}
 		model.addAttribute("member", member);
