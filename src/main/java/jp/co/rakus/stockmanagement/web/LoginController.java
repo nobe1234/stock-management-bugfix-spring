@@ -1,5 +1,7 @@
 package jp.co.rakus.stockmanagement.web;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,9 @@ public class LoginController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private HttpSession session;
 
 	/**
 	 * フォームを初期化します.
@@ -55,7 +60,7 @@ public class LoginController {
 	 * @return ログイン成功時：書籍リスト画面
 	 */
 	@RequestMapping(value = "/login")
-	public String login(@Validated LoginForm form, BindingResult result, Model model) {
+	public String login(@Validated LoginForm form, BindingResult result,Model model ) {
 		if (result.hasErrors()) {
 			return index();
 		}
@@ -67,7 +72,8 @@ public class LoginController {
 			result.addError(error);
 			return index();
 		}
-		model.addAttribute("member", member);
+		// TODO:かくにんjspのパラメータを遅れているか。
+		session.setAttribute("member", member);
 		return "redirect:/book/list";
 	}
 }

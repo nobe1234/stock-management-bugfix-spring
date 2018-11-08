@@ -2,7 +2,7 @@
 <%@ include file="../common/common.jsp"  %>
 <body>
 <div class="container">
-	<c:out value="${member.name}"/>さん　こんにちは！<br>
+	<c:out value="${member.name}"/>さん こんにちは！<br>
 	<a href="${pageContext.request.contextPath}/logout/sessionInvalidate">ログアウト</a>
 	<h3>書籍一覧</h3>
 	<div class="span8">
