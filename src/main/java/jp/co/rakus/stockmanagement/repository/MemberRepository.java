@@ -45,8 +45,15 @@ public class MemberRepository {
 				+ "WHERE mail_address= :mailAddress and password= :password ";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password",
 				password);
-		Member member = jdbcTemplate.queryForObject(sql, param, MEMBER_ROW_MAPPER);
-		return member;
+		// 非検査例外のため、try-catchを外してもいいが、その場合はqueryを使って返したリストを
+		// コントローラー側で取り出して行を行う必要がある。 queryforobjectは必ず１件とる。
+		try {
+			Member member = jdbcTemplate.queryForObject(sql, param, MEMBER_ROW_MAPPER);
+			return member;
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

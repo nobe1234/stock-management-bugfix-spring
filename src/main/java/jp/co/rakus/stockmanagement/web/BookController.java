@@ -56,8 +56,8 @@ public class BookController {
 	/**
 	 * 書籍詳細情報を取得し書籍詳細画面を表示します.
 	 * 
-	 * @param id 書籍ID
-	 * @param    model モデル
+	 * @param id    書籍ID
+	 * @param model モデル
 	 * @return 書籍詳細画面
 	 */
 	@RequestMapping(value = "show/{bookId}")
@@ -72,7 +72,7 @@ public class BookController {
 	 * 
 	 * @param form   フォーム
 	 * @param result リザルト情報
-	 * @param        model モデル
+	 * @param model  モデル
 	 * @return 書籍リスト画面
 	 */
 	@RequestMapping(value = "update")

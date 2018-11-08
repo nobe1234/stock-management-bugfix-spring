@@ -57,26 +57,24 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "create")
 	public String create(@Validated MemberForm form, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return form();
-		}
 
 		if (!(form.getPassword().equals(form.getRetypePassword()))) {
 			result.rejectValue("password", null, "入力されたパスワードが異なります。");
-			return form();
 		}
 
 		Member inquiryMember = new Member();
 		inquiryMember = memberService.findByMailAddress(form.getMailAddress());
-
-		if (inquiryMember.getMailAddress().equals(null)) {
-			Member registeredMember = new Member();
-			BeanUtils.copyProperties(form, registeredMember);
-			memberService.save(registeredMember);
-		} else {
+		if (!(inquiryMember.getMailAddress().equals(null))) {
 			result.rejectValue("mailAddress", null, "メールアドレスが重複しています。");
+		}
+
+		if (result.hasErrors()) {
 			return form();
 		}
+
+		Member registeredMember = new Member();
+		BeanUtils.copyProperties(form, registeredMember);
+		memberService.save(registeredMember);
 
 		return "redirect:/";
 	}
