@@ -66,9 +66,20 @@ public class BookController {
 		model.addAttribute("book", book);
 		return "book/show";
 	}
+	
+	/**
+	 * 書籍登録画面へ移行を行う.
+	 * 
+	 * @return 書籍登録画面
+	 */
+	@RequestMapping("/bookForm")
+	public String toUpdateForm() {
+		return "/book/bookForm";
+	}
+	
 
 	/**
-	 * 書籍更新を行います.
+	 * 書籍更新、および書籍登録を行います.
 	 * 
 	 * @param form   フォーム
 	 * @param result リザルト情報
