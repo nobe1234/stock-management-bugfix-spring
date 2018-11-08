@@ -1,6 +1,5 @@
 package jp.co.rakus.stockmanagement.web;
 
-import javax.validation.Constraint;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;

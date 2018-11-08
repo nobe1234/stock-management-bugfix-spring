@@ -17,7 +17,6 @@ public class BookForm {
 	/** 在庫 */
 	@NotNull(message = "値を入力してください")
 	private Integer stock;
-
 	/** 書籍名 */
 	private String name;
 	/** 著者 */

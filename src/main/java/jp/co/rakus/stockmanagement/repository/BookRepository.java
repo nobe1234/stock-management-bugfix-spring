@@ -58,14 +58,19 @@ public class BookRepository {
 	public Book update(Book book) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
 		if (book.getId() == null) {
-			// TODO:insert文を作成
-			jdbcTemplate.update(
-					"INSERT INTO BOOKS (name,author,publisher,price,isbncode,saledate,explanation,image,stock) "
-							+ "VALUES(:name,:author,:publisher,:price,:isbncode,:saledate,:explanation,:image,:stock)",
-					param);
-		} else {
+			throw new NullPointerException();
+		} 
 			jdbcTemplate.update("UPDATE books SET stock=:stock WHERE id=:id", param);
-		}
+		
+		return book;
+	}
+	
+	public Book insert(Book book) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
+			jdbcTemplate.update(
+					"INSERT INTO BOOKS (id,name,author,publisher,price,isbncode,saledate,explanation,image,stock) "
+							+ "VALUES(:id,:name,:author,:publisher,:price,:isbncode,:saledate,:explanation,:image,:stock)",
+					param);
 		return book;
 	}
 }

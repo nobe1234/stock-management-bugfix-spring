@@ -5,6 +5,7 @@ import java.util.List;
 import jp.co.rakus.stockmanagement.domain.Book;
 import jp.co.rakus.stockmanagement.service.BookService;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +67,7 @@ public class BookController {
 		model.addAttribute("book", book);
 		return "book/show";
 	}
-	
+
 	/**
 	 * 書籍登録画面へ移行を行う.
 	 * 
@@ -76,30 +77,30 @@ public class BookController {
 	public String toUpdateForm() {
 		return "/book/bookForm";
 	}
-	
 
 	/**
 	 * 書籍更新、および書籍登録を行います.
 	 * 
-	 * @param form   フォーム
+	 * @param bookForm   フォーム
 	 * @param result リザルト情報
 	 * @param model  モデル
 	 * @return 書籍リスト画面
 	 */
 	@RequestMapping(value = "update")
-	public String update(@Validated BookForm form, BindingResult result, Model model) {
+	public String update(@Validated BookForm bookForm, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return show(form.getId(), model);
+			return show(bookForm.getId(), model);
 		}
-		Book book = bookService.findOne(form.getId());
-		if (form.getId() == null) {
-			// TODO:登録フォームの作成
-			// TODO:登録後のリンク先は書籍リスト画面でいいか？
+		Book book = new Book();
+		//わからない
+		if (bookForm.getId() == null) {
+			BeanUtils.copyProperties(bookForm, book);
 			bookService.update(book);
-			return list(model);
+		} else {
+			book = bookService.findOne(bookForm.getId());
+			book.setStock(bookForm.getStock());
+			bookService.update(book);
 		}
-		book.setStock(form.getStock());
-		bookService.update(book);
 
 		return list(model);
 	}
