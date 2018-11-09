@@ -5,6 +5,9 @@
 
 <!DOCTYPE html>
 <html>
+<base href="/">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 <head>
 <meta charset="UTF-8">
 <title>書籍登録フォーム</title>
@@ -14,19 +17,14 @@
 		<h3>書籍登録フォーム</h3>
 		<div class="span8">
 			<div class="row">
+					<table class="table table-striped">
 				<form:form modelAttribute="bookForm" enctype="multipart/form-data"
 					action="${pageContext.request.contextPath}/book/upload">
-					<table class="table table-striped">
-						<%-- 	<tr>
-							<td><form:errors path="id" cssStyle="color:red"
-									element="div"></form:errors> ID<form:input path="id" /><br>
-							</td>
-						<tr>
-					 --%>
 						<tr>
 							<td><form:errors path="name" cssStyle="color:red"
 									element="div"></form:errors> 名前<form:input path="name" /><br>
 							</td>
+						</tr>
 						<tr>
 							<td><form:errors path="author" cssStyle="color:red"
 									element="div"></form:errors> 著者<form:input path="author" /><br>
@@ -58,7 +56,8 @@
 									element="div"></form:errors> 説明 <form:input path="explanation" /><br>
 							</td>
 						</tr>
-						<tr><form:errors path="image" cssStyle="color:red" element="div" ></form:errors>
+						<tr>
+							<form:errors path="image" cssStyle="color:red" element="div"></form:errors>
 							<td>商品画像登録：<input type="file" name="image"><br>
 							</td>
 						</tr>
@@ -70,8 +69,8 @@
 						<tr>
 							<td><input type="submit" value="登録"></td>
 						</tr>
-					</table>
 				</form:form>
+					</table>
 			</div>
 		</div>
 	</div>

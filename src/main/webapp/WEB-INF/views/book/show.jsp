@@ -10,7 +10,7 @@
 		<h3>書籍在庫数変更画面</h3>
 		<div class="span8">
 			<div class="row">
-				<form:errors path="bookForm.*" />
+				<form:errors path="bookStockForm.*" />
 				<table class="table table-striped">
 					<tr>
 						<th>書籍名</th>

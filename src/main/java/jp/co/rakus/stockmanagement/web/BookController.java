@@ -146,7 +146,7 @@ public class BookController {
 	 * @return 書籍リスト画面
 	 */
 	@RequestMapping(value = "update")
-	public String update(@Validated BookForm form, BindingResult result, Model model) {
+	public String update(@Validated BookStockForm form, BindingResult result, Model model) {
 		Book book = bookService.findOne(form.getId());
 		// 在庫更新部分
 		if (result.hasErrors()) {
