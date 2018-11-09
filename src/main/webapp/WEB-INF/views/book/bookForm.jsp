@@ -58,7 +58,7 @@
 									element="div"></form:errors> 説明 <form:input path="explanation" /><br>
 							</td>
 						</tr>
-						<tr>
+						<tr><form:errors path="image" cssStyle="color:red" element="div" ></form:errors>
 							<td>商品画像登録：<input type="file" name="image"><br>
 							</td>
 						</tr>

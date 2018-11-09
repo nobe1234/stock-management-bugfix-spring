@@ -48,8 +48,7 @@
 					</tr>
 					<tr>
 						<th>在庫数</th>
-						<td><form:errors path="bookForm.*" />
-							<form action="/book/update" method="post">
+						<td><form action="/book/update" method="post">
 								<input type="text" name="stock"
 									value="<c:out value="${book.stock}"/>"> <input
 									type="hidden" name="id" value="<c:out value="${book.id}"/>">

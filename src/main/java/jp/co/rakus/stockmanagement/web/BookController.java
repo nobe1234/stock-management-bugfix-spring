@@ -2,6 +2,9 @@ package jp.co.rakus.stockmanagement.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -96,7 +99,9 @@ public class BookController {
 	 */
 	@RequestMapping(value = "upload")
 	public String upload(@Validated BookForm bookForm, BindingResult result, Model model) {
-//TODO:分岐が多岐にわたってしまったので、あとでメソッドを分けること。わかりにくい。
+		if (result.hasErrors()) {
+			return toUpdateForm();
+		}
 		// 書籍情報登録部分 idは連番なので次の値を入れる。
 		Book insertBook = new Book();
 		BeanUtils.copyProperties(bookForm, insertBook);
@@ -104,9 +109,6 @@ public class BookController {
 		int newMaxId = presentMaxId + 1;
 		insertBook.setId(newMaxId);
 
-		if (result.hasErrors()) {
-			return toUpdateForm();
-		}
 		// 画像アップロード部分
 		if (bookForm.getImage() != null) {
 			MultipartFile file = bookForm.getImage();
@@ -120,7 +122,14 @@ public class BookController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+		}
+		try {
+			String saleDate = bookForm.getSaledate();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Date conversionSaleDate = dateFormat.parse(saleDate);
+			insertBook.setSaledate(conversionSaleDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 
 		bookService.insert(insertBook);

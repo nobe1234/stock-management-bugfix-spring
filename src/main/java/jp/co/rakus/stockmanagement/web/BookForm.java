@@ -1,8 +1,7 @@
 package jp.co.rakus.stockmanagement.web;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +19,8 @@ public class BookForm {
 	/** id */
 	private Integer id;
 	/** 在庫 */
-	@NotBlank(message = "在庫を入力してください")
+//	@Size(min = 0)
+	@NotNull(message = "在庫を入力してください")
 	private Integer stock;
 	/** 著者名 */
 	@NotBlank(message = "著者名を入力してください")
@@ -32,13 +32,14 @@ public class BookForm {
 	@NotBlank(message = "出版社を入力してください")
 	private String publisher;
 	/** 価格 */
+//	@Size(min = 0)
 	@NotNull(message = "価格を入力してください")
-	private int price;
+	private Integer price;
 	/** ISBNコード */
-	@NotNull(message = "ISBNコードを入力してください")
+	@NotBlank(message = "ISBNコードを入力してください")
 	private String isbncode;
 	/** 発売日 */
-	@NotNull(message = "発売日を入力してください")
+	@NotBlank(message = "発売日を入力してください")
 	private String saledate;
 	/** 説明 */
 	@NotBlank(message = "説明を入力してください")
@@ -86,11 +87,11 @@ public class BookForm {
 		this.publisher = publisher;
 	}
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
