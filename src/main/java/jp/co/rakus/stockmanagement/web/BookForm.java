@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * 書籍関連のリクエストパラメータが入るフォーム.
  * 
@@ -11,28 +14,37 @@ import javax.validation.constraints.NotNull;
  *
  */
 public class BookForm {
+
+	// 文字列はブランクへ変更
+	// TODO:
 	/** id */
-	@NotNull
 	private Integer id;
 	/** 在庫 */
-	@NotNull(message = "値を入力してください")
+	@NotBlank(message = "在庫を入力してください")
 	private Integer stock;
-	/** 書籍名 */
+	/** 著者名 */
+	@NotBlank(message = "著者名を入力してください")
 	private String name;
 	/** 著者 */
+	@NotBlank(message = "著者を入力してください")
 	private String author;
 	/** 出版社 */
+	@NotBlank(message = "出版社を入力してください")
 	private String publisher;
 	/** 価格 */
+	@NotNull(message = "価格を入力してください")
 	private int price;
 	/** ISBNコード */
+	@NotNull(message = "ISBNコードを入力してください")
 	private String isbncode;
 	/** 発売日 */
-	private Date saledate;
+	@NotNull(message = "発売日を入力してください")
+	private String saledate;
 	/** 説明 */
+	@NotBlank(message = "説明を入力してください")
 	private String explanation;
 	/** 画像 */
-	private String image;;
+	private MultipartFile image;
 
 	public Integer getId() {
 		return id;
@@ -90,11 +102,11 @@ public class BookForm {
 		this.isbncode = isbncode;
 	}
 
-	public Date getSaledate() {
+	public String getSaledate() {
 		return saledate;
 	}
 
-	public void setSaledate(Date saledate) {
+	public void setSaledate(String saledate) {
 		this.saledate = saledate;
 	}
 
@@ -106,11 +118,11 @@ public class BookForm {
 		this.explanation = explanation;
 	}
 
-	public String getImage() {
+	public MultipartFile getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(MultipartFile image) {
 		this.image = image;
 	}
 

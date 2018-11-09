@@ -1,15 +1,16 @@
 package jp.co.rakus.stockmanagement.repository;
 
-import jp.co.rakus.stockmanagement.domain.Member;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+
+import jp.co.rakus.stockmanagement.domain.Member;
 
 /**
  * membersテーブル操作用のリポジトリクラス.
@@ -47,13 +48,15 @@ public class MemberRepository {
 				password);
 		// 非検査例外のため、try-catchを外してもいいが、その場合はqueryを使って返したリストを
 		// コントローラー側で取り出して行を行う必要がある。 queryforobjectは必ず１件とる。
-		try {
-			Member member = jdbcTemplate.queryForObject(sql, param, MEMBER_ROW_MAPPER);
-			return member;
-		} catch (DataAccessException e) {
-			e.printStackTrace();
+
+		List<Member> memberList = jdbcTemplate.query(sql, param, MEMBER_ROW_MAPPER);
+		if (memberList.size() == 0) {
 			return null;
 		}
+		for(Member member : memberList) {
+			return member;
+		}
+		return null;
 	}
 
 	/**

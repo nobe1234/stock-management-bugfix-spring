@@ -14,9 +14,15 @@
 		<h3>書籍登録フォーム</h3>
 		<div class="span8">
 			<div class="row">
-				<form:form modelAttribute="bookForm"
-					action="${pageContext.request.contextPath}/book/update">
+				<form:form modelAttribute="bookForm" enctype="multipart/form-data"
+					action="${pageContext.request.contextPath}/book/upload">
 					<table class="table table-striped">
+						<%-- 	<tr>
+							<td><form:errors path="id" cssStyle="color:red"
+									element="div"></form:errors> ID<form:input path="id" /><br>
+							</td>
+						<tr>
+					 --%>
 						<tr>
 							<td><form:errors path="name" cssStyle="color:red"
 									element="div"></form:errors> 名前<form:input path="name" /><br>
@@ -53,11 +59,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td>
-								<form action="${pageContext.request.contextPath}/book/update"
-									enctype=multipart/form-data method="post">
-									商品画像登録：<input type="file" name="image"><br>
-								</form>
+							<td>商品画像登録：<input type="file" name="image"><br>
 							</td>
 						</tr>
 						<tr>

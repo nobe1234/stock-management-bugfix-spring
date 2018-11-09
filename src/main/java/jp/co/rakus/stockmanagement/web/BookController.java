@@ -1,9 +1,10 @@
 package jp.co.rakus.stockmanagement.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import jp.co.rakus.stockmanagement.domain.Book;
-import jp.co.rakus.stockmanagement.service.BookService;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
+import jp.co.rakus.stockmanagement.domain.Book;
+import jp.co.rakus.stockmanagement.service.BookService;
 
 /**
  * 書籍関連処理を行うコントローラー.
@@ -29,6 +34,9 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
+
+	@Autowired
+	private ServletContext context;
 
 	/**
 	 * フォームを初期化します.
@@ -75,32 +83,68 @@ public class BookController {
 	 */
 	@RequestMapping("/bookForm")
 	public String toUpdateForm() {
-		return "/book/bookForm";
+		return "book/bookForm";
 	}
 
 	/**
-	 * 書籍更新、および書籍登録を行います.
+	 * 新規書籍登録を行います.
 	 * 
-	 * @param bookForm   フォーム
+	 * @param bookForm フォーム
+	 * @param result   リザルト情報
+	 * @param model    モデル
+	 * @return 書籍リスト画面
+	 */
+	@RequestMapping(value = "upload")
+	public String upload(@Validated BookForm bookForm, BindingResult result, Model model) {
+//TODO:分岐が多岐にわたってしまったので、あとでメソッドを分けること。わかりにくい。
+		// 書籍情報登録部分 idは連番なので次の値を入れる。
+		Book insertBook = new Book();
+		BeanUtils.copyProperties(bookForm, insertBook);
+		int presentMaxId = bookService.findMaxId();
+		int newMaxId = presentMaxId + 1;
+		insertBook.setId(newMaxId);
+
+		if (result.hasErrors()) {
+			return toUpdateForm();
+		}
+		// 画像アップロード部分
+		if (bookForm.getImage() != null) {
+			MultipartFile file = bookForm.getImage();
+			String fileName = file.getOriginalFilename();
+			String path = context.getRealPath("/img/" + fileName);
+			try {
+				file.transferTo(new File(path));
+				insertBook.setImage(fileName);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		bookService.insert(insertBook);
+
+		return list(model);
+	}
+
+	/**
+	 * 書籍の在庫更新を行います.
+	 * 
+	 * @param form   フォーム
 	 * @param result リザルト情報
 	 * @param model  モデル
 	 * @return 書籍リスト画面
 	 */
 	@RequestMapping(value = "update")
-	public String update(@Validated BookForm bookForm, BindingResult result, Model model) {
+	public String update(@Validated BookForm form, BindingResult result, Model model) {
+		Book book = bookService.findOne(form.getId());
+		// 在庫更新部分
 		if (result.hasErrors()) {
-			return show(bookForm.getId(), model);
+			return show(form.getId(), model);
 		}
-		Book book = new Book();
-		//わからない
-		if (bookForm.getId() == null) {
-			BeanUtils.copyProperties(bookForm, book);
-			bookService.update(book);
-		} else {
-			book = bookService.findOne(bookForm.getId());
-			book.setStock(bookForm.getStock());
-			bookService.update(book);
-		}
+		book.setStock(form.getStock());
+		bookService.update(book);
 
 		return list(model);
 	}

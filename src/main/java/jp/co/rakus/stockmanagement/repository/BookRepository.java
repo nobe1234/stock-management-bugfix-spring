@@ -47,30 +47,45 @@ public class BookRepository {
 		return books;
 	}
 
+	// TODO:現在連番で取られているidの最大を返す。＋１したい。
+	public Integer findMaxId() {
+		SqlParameterSource param = new MapSqlParameterSource();
+		Integer id = jdbcTemplate.queryForObject("SELECT max(id) FROM books", param, Integer.class);
+		return id;
+	}
+
 	public Book findOne(Integer id) {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
-		Book book = jdbcTemplate.queryForObject(
+		List<Book> bookList = jdbcTemplate.query(
 				"SELECT id,name,author,publisher,price,isbncode,saledate,explanation,image,stock FROM books WHERE id=:id",
 				param, BOOK_ROW_MAPPER);
-		return book;
+		if (bookList.size() == 0) {
+			return null;
+		} else {
+			for (Book book : bookList) {
+				return book;
+			}
+
+		}
+		return null;
 	}
 
 	public Book update(Book book) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
 		if (book.getId() == null) {
 			throw new NullPointerException();
-		} 
-			jdbcTemplate.update("UPDATE books SET stock=:stock WHERE id=:id", param);
-		
+		}
+		jdbcTemplate.update("UPDATE books SET stock=:stock WHERE id=:id", param);
+
 		return book;
 	}
-	
+
 	public Book insert(Book book) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
-			jdbcTemplate.update(
-					"INSERT INTO BOOKS (id,name,author,publisher,price,isbncode,saledate,explanation,image,stock) "
-							+ "VALUES(:id,:name,:author,:publisher,:price,:isbncode,:saledate,:explanation,:image,:stock)",
-					param);
+		jdbcTemplate.update(
+				"INSERT INTO BOOKS (id,name,author,publisher,price,isbncode,saledate,explanation,image,stock) "
+						+ "VALUES(:id,:name,:author,:publisher,:price,:isbncode,:saledate,:explanation,:image,:stock)",
+				param);
 		return book;
 	}
 }

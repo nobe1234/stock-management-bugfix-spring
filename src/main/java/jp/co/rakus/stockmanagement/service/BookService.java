@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 書籍関連サービスクラス.
+ * 
  * @author igamasayuki
  *
  */
@@ -18,23 +19,37 @@ public class BookService {
 
 	@Autowired
 	BookRepository bookRepository;
-	
-	public List<Book> findAll(){
+
+	public Integer findMaxId() {
+		return bookRepository.findMaxId();
+	}
+
+	public List<Book> findAll() {
 		return bookRepository.findAll();
 	}
-	
+
 	public Book findOne(Integer id) {
 		return bookRepository.findOne(id);
 	}
-	
+
 //	public Book save(Book book){
 //		return bookRepository.save(book);
 //	}
-	
-	public Book update(Book book){
+
+	public Book update(Book book) {
 		return bookRepository.update(book);
 	}
-	
+
+	/**
+	 * 書籍情報追加用のメソッド.
+	 * 
+	 * @param book
+	 * @return 追加用のメソッド。
+	 */
+	public Book insert(Book book) {
+		return bookRepository.insert(book);
+	}
+
 //	public void delete(Integer id){
 //		bookRepository.delete(id);
 //	}
